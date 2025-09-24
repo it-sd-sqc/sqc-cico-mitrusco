@@ -37,28 +37,62 @@ public class Main {
   private static class InputFilter extends DocumentFilter {
     private static final int MAX_LENGTH = 8;
 
-    @Override
-    public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+    private String digitsOnly(String s) {
+      return (s == null) ? "" : s.replaceAll("\\D", "");
     }
 
     @Override
-    public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
+    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+            throws BadLocationException {
+      if (fb.getDocument() == null || string == null || string.isEmpty()) return;
+
+      String add = digitsOnly(string);
+      if (add.isEmpty()) {
         Toolkit.getDefaultToolkit().beep();
+        return;
       }
+
+      int curLen = fb.getDocument().getLength();
+      int room = MAX_LENGTH - curLen;
+      if (room <= 0) {
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      if (add.length() > room) add = add.substring(0, room);
+      super.insertString(fb, offset, add, attr);
+    }
+
+    @Override
+    public void replace(FilterBypass fb, int offset, int length, String string, AttributeSet attr)
+            throws BadLocationException {
+      if (fb.getDocument() == null) return;
+
+      // If this is just a delete, allow it.
+      if (string == null || string.isEmpty()) {
+        super.replace(fb, offset, length, string, attr);
+        return;
+      }
+
+      String add = digitsOnly(string);
+      if (add.isEmpty()) {
+        // Attempting to insert only non-digits: reject and beep.
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      int curLen = fb.getDocument().getLength();
+      int newLen = curLen - length + add.length();
+      if (newLen > MAX_LENGTH) {
+        int room = MAX_LENGTH - (curLen - length);
+        if (room <= 0) {
+          Toolkit.getDefaultToolkit().beep();
+          return;
+        }
+        add = add.substring(0, room);
+      }
+
+      super.replace(fb, offset, length, add, attr);
     }
   }
 

@@ -61,4 +61,14 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+# Module 4: Ticket 401 - Only allow numerical input in the card field
 
+## Test steps
+1. Build and run CiCo
+2. Type a0000b0000 into the field and click Update.
+3. Wait for status panel to close.
+4. Type c0000p0000 into the field and click Update.
+
+## Expected results
+* Should display "Checked IN" after step 2.
+* Should display "Checked OUT" after step 4.
