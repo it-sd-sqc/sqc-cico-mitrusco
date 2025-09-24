@@ -72,3 +72,19 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Checked IN" after step 2.
 * Should display "Checked OUT" after step 4.
+
+# Module 5: Ticket 501 - Add a JButton to allow the next person to check in but,
+			 still allow the timeout to occur in case the button is not hit.
+
+## Test steps
+1. Build and run CiCo
+2. Type 00000000 into the field and click Update.
+3. Wait for status panel to close without clicking Complete.
+4. Type 00000000 into the field and click Update.
+5. click Complete within a few seconds.
+
+## Expected results
+* Should display "Checked IN" after step 2.
+* Should return back to Scan card screen after the timeout of 11 seconds after step 3.
+* Should display "Checked OUT" after step 4.
+* Should return back to Scan card screen after step 5.
