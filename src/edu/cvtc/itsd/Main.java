@@ -140,6 +140,7 @@ public class Main {
   static JLabel labelUser;
   static JLabel labelState;
   static JButton buttonAcknowledge;
+  static JButton buttonComplete;
 
   // Timer variables //////////////////////////////////////////////////////////
   static java.util.Timer timer;
@@ -184,7 +185,7 @@ public class Main {
         }
 
         updateStateLabels(name, currentState == 1);
-        scheduleTransitionFrom(CARD_STATE, null);
+        scheduleTransitionFrom(CARD_STATE, buttonComplete);
       }
       else {
         showError(ERROR_NOT_FOUND);
@@ -322,6 +323,14 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
+
+    // "Complete" button to skip the timeout and return immediately
+    buttonComplete = new JButton("Complete");
+    buttonComplete.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    buttonComplete.setForeground(Color.yellow);
+    buttonComplete.addActionListener(new Handler());
+    panelStatus.add(Box.createVerticalStrut(12));
+    panelStatus.add(buttonComplete);
 
     panelStatus.add(Box.createVerticalGlue());
 
