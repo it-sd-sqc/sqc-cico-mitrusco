@@ -88,3 +88,16 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * Should return back to Scan card screen after the timeout of 11 seconds after step 3.
 * Should display "Checked OUT" after step 4.
 * Should return back to Scan card screen after step 5.
+
+# Module 6: Ticket 601 - Submitting the text field when 8 characters are present
+
+## Test steps
+1. Build and run CiCo
+2. Type 00000000 into the field
+3. Wait for status panel to close without clicking Complete.
+4. Type 00000000 into the field
+5. click Complete within a few seconds.
+
+## Expected results
+* Should switch panel when 8 characters are in field
+* Should display the correct screen
