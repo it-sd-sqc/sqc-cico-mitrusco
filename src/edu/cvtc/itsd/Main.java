@@ -41,10 +41,12 @@ public class Main {
       return (s == null) ? "" : s.replaceAll("\\D", "");
     }
 
+
     @Override
     public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
             throws BadLocationException {
       if (fb.getDocument() == null || string == null || string.isEmpty()) return;
+
 
       String add = digitsOnly(string);
       if (add.isEmpty()) {
@@ -68,11 +70,13 @@ public class Main {
             throws BadLocationException {
       if (fb.getDocument() == null) return;
 
+
       // If this is just a delete, allow it.
       if (string == null || string.isEmpty()) {
         super.replace(fb, offset, length, string, attr);
         return;
       }
+
 
       String add = digitsOnly(string);
       if (add.isEmpty()) {
@@ -93,7 +97,13 @@ public class Main {
       }
 
       super.replace(fb, offset, length, add, attr);
+
+      if (fb.getDocument().getLength() == MAX_LENGTH) {
+        processCard();
+      }
     }
+
+
   }
 
   // Lookup the card information after button press ///////////////////////////
@@ -295,11 +305,7 @@ public class Main {
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
 
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
+
 
     panelMain.add(Box.createVerticalGlue());
 
